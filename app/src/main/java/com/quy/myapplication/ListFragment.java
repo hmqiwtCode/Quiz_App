@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,8 @@ import java.util.List;
 
 public class ListFragment extends Fragment implements QuizListAdapter.OnQuizListItemClicked {
 
+    // Navigate
+    private NavController navController;
     private RecyclerView listView;
     private QuizListViewModel quizListViewModel;
     ProgressBar listProgress;
@@ -49,6 +53,9 @@ public class ListFragment extends Fragment implements QuizListAdapter.OnQuizList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.e("VIEW_LOG","onViewCreated");
+
+        navController = Navigation.findNavController(view);
+
         listView = view.findViewById(R.id.list_view);
         adapter = new QuizListAdapter(this);
 
@@ -83,6 +90,10 @@ public class ListFragment extends Fragment implements QuizListAdapter.OnQuizList
 
     @Override
     public void onItemClicked(int position) {
+        ListFragmentDirections.ActionListFragmentToDetailsFragment action = ListFragmentDirections.actionListFragmentToDetailsFragment();
+        action.setPosition(position);
+        Log.e("POSITION",position+"");
+        navController.navigate(action);
 
     }
 }

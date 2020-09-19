@@ -4,6 +4,7 @@ package com.quy.myapplication;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,8 @@ import android.view.ViewGroup;
  */
 public class DetailsFragment extends Fragment {
 
-
+    private NavController navController;
+    private QuizListViewModel quizListViewModel;
     public DetailsFragment() {
         // Required empty public constructor
     }
