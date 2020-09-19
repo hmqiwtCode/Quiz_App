@@ -15,14 +15,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements QuizListAdapter.OnQuizListItemClicked {
 
     private RecyclerView listView;
     private QuizListViewModel quizListViewModel;
+    ProgressBar listProgress;
+
+    private Animation fadeInAnim;
+    private Animation fadeOutAnim;
 
     private QuizListAdapter adapter;
 
@@ -43,11 +50,16 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.e("VIEW_LOG","onViewCreated");
         listView = view.findViewById(R.id.list_view);
-        adapter = new QuizListAdapter();
+        adapter = new QuizListAdapter(this);
 
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
+        listProgress = view.findViewById(R.id.list_progress);
         listView.setHasFixedSize(true);
         listView.setAdapter(adapter);
+
+        fadeInAnim = AnimationUtils.loadAnimation(getContext(),R.anim.fade_in);
+        fadeOutAnim = AnimationUtils.loadAnimation(getContext(),R.anim.fade_out);
+
 
 
     }
@@ -61,9 +73,16 @@ public class ListFragment extends Fragment {
             @Override
             public void onChanged(List<QuizListModel> quizListModels) {
                 Log.e("VIEW_LOG","onChanged");
+                listView.startAnimation(fadeInAnim);
+                listProgress.startAnimation(fadeOutAnim);
                 adapter.setQuizListModels(quizListModels);
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+
     }
 }
